@@ -1,5 +1,6 @@
-import { createStore } from 'redux'
-import { createSlice } from '@reduxjs/toolkit';
+// import { createStore,combineReducers } from 'redux'
+// could have used combine reducers but used configureStore 
+import { createSlice,configureStore } from '@reduxjs/toolkit';
 
 // const counterReducer = (state = {counter : 0,showCounter : true},  action )=>{
 const initialState = {counter: 0, showCounter : true}
@@ -13,13 +14,14 @@ const counterSlice = createSlice({
         },
         decrement(state) {state.counter--},
         increase(state,action) {
-            state.counter= state.counter + action.amount
+            state.counter= state.counter + action.payload
         },
         toggleCounter(state) {
             state.showCounter= !state.showCounter
         },
     }
 });
+
 
 // -------------------------------------------------------
 // used reduxtoolkit instead of this
@@ -55,6 +57,19 @@ const counterSlice = createSlice({
 //     return state
 // };
 
-const store = createStore(counterSlice.reducer);
+// const store = createStore(counterSlice.reducer);
+ const store = configureStore({
+   reducer: counterSlice.reducer
+});
+
+//if multiples use oblect 
+// const store = configureStore({
+//     reducers:{
+//      counter :counterSlice.reducer,
+//      authorization : authorizationSlice.reducers}
+//  });
+ 
+
+export const counterActions = counterSlice.actions;
 
 export default store;
